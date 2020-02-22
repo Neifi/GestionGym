@@ -1,6 +1,5 @@
 package es.neifi.model;
 
-import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +7,7 @@ import java.sql.SQLException;
 
 public class PostgreSQLConnection {
 	
-	private final static String URL ="jdbc:postgresql://localhost:5433/?";
+	private final static String URL ="jdbc:postgresql://localhost:5433/gestiongym";
 	private final static String USER ="postgres";
 	private final static String PASSWORD ="admin";
 	private static Connection connection;
@@ -21,7 +20,7 @@ public class PostgreSQLConnection {
 			System.out.println("Exito al conectar");
 			return connection;
 		} catch (ClassNotFoundException | SQLException e) {
-			System.out.println("No se pudo conectar");
+			System.out.println("[INFO] No se pudo conectar");
 			e.printStackTrace();
 		}
 		return connection;
