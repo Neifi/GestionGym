@@ -20,22 +20,9 @@ public class LoginController {
 	private MainForm mainForm;
 
 	public enum User {
-		ADMIN {
-
-			public int getKind() {
-				return 0;
-			}
-		},
-		CLIENT {
-			public int getKind() {
-				return 1;
-			}
-		},
-		NOPE{
-			public int getKind() {
-				return -1;
-			}
-		}
+		ADMIN ,
+		CLIENT,
+		NOPE
 	}
 
 	public LoginController() {
@@ -50,21 +37,22 @@ public class LoginController {
 	 *
 	 * @param username
 	 * @param password
-	 * @return CLIENT si es un cliente, ADMIN si es un gimnasio, NOPE si no existen las credenciales.
+	 * @return CLIENT si es un cliente
+	 * ADMIN si es un gimnasio
+	 * NOPE si no existen las credenciales.
 	 */
 	public User validateLogin(String username, String password) {
 		ResultSet rs = readClientes(username, password);
-		CrudClientView crudClientView = new CrudClientView();
-		CheckListView checkListView = new CheckListView();
+
 		try {
-			System.out.println("[INFO] checking clients...");
+			
 			if (rs.next()) {
 				return User.CLIENT;
 			} else {
 				rs = readGyms(username, password);
-				System.out.println("[INFO] No such user checking, gyms...");
+			
 				if (rs.next()) {
-					crudClientView.setVisible(true);
+					
 					return User.ADMIN;
 				} else {
 					return User.NOPE;
