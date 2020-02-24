@@ -20,9 +20,7 @@ public class LoginController {
 	private MainForm mainForm;
 
 	public enum User {
-		ADMIN ,
-		CLIENT,
-		NOPE
+		ADMIN, CLIENT, NOPE
 	}
 
 	public LoginController() {
@@ -32,32 +30,27 @@ public class LoginController {
 	/**
 	 * Comprueba las credenciales introducidas por el usuario en la base de datos.
 	 * Las consultas se hacen en las tablas clientes y gyms , para comprobar que el
-	 * usuario es admin(un gimnasio) o un simple cliente. 
-	 * Dependiendo del usuario retorna un valor.
+	 * usuario es admin(un gimnasio) o un simple cliente. Dependiendo del usuario
+	 * retorna un valor.
 	 *
 	 * @param username
 	 * @param password
-	 * @return CLIENT si es un cliente
-	 * ADMIN si es un gimnasio
-	 * NOPE si no existen las credenciales.
+	 * @return CLIENT si es un cliente ADMIN si es un gimnasio NOPE si no existen
+	 *         las credenciales.
 	 */
 	public User validateLogin(String username, String password) {
 		ResultSet rs = readClientes(username, password);
 
 		try {
-			
 			if (rs.next()) {
-				return User.CLIENT;
-			} else {
-				rs = readGyms(username, password);
-			
-				if (rs.next()) {
-					
+
+				if (rs.getBoolean("es_admin")) {
+					rs.close();
 					return User.ADMIN;
 				} else {
-					return User.NOPE;
+					rs.close();
+					return User.CLIENT;
 				}
-
 			}
 		} catch (Exception e) {
 			// TODO error in login
@@ -68,7 +61,7 @@ public class LoginController {
 	}
 
 	private ResultSet readClientes(String username, String password) {
-		String select = "SELECT * FROM clientes WHERE dni = ? AND password = crypt(?,password)";
+		String select = "SELECT * FROM clientes WHERE nombre = ? AND password = crypt(?,password)";
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -85,7 +78,9 @@ public class LoginController {
 		}
 
 		catch (Exception e) {
-
+			e.printStackTrace();
+		}finally {
+			PostgreSQLConnection.closeConnection(conn);
 		}
 		return rs;
 	}

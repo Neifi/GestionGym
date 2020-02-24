@@ -326,7 +326,7 @@ public class CrudClientView extends JFrame {
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!textField.getText().isBlank() || textField.getText().isEmpty()) {
-
+					String options[] = new String[] {"dni","nombre","apellidos","fecha_inscripcion","fecha_nacimiento","dentro"};
 					String filter = comboBox.getModel().getSelectedItem().toString();
 					String value = textField.getText();
 					if (filter.equals("DNI")) {
