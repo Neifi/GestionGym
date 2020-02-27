@@ -1,6 +1,8 @@
 package es.neifi.controller;
 
 import javax.swing.table.DefaultTableModel;
+
+import es.neifi.model.Cliente;
 import es.neifi.model.ClientesDao;
 
 public class AdminController extends ClientesDao{
@@ -11,34 +13,14 @@ public class AdminController extends ClientesDao{
 		
 	}
 	
-	public static DefaultTableModel findClientesById(String dni) {
-		return ClientesDao.findByDni(dni);
+	public static DefaultTableModel findClientesByCondition(String condition, String value) {
+		return ClientesDao.findByCondition(condition, value);
 		
 	}
 	
-	public static DefaultTableModel findClientesByNombre(String nombre) {
-		return ClientesDao.findByNombre(nombre);
+	public static boolean createCliente(Cliente cliente) {
 		
-	}
-	
-	public static DefaultTableModel findClientesByApellidos(String apellidos) {
-		return ClientesDao.findByApellidos(apellidos);
-		
-	}
-	
-	public static DefaultTableModel findClientesByFechaIns(String fechaIns) {
-		return ClientesDao.findByFechaIns(fechaIns);
-		
-	}
-	
-	public static DefaultTableModel findClientesByfFechaNa(String fechaNa) {
-		return ClientesDao.findByFechaNa(fechaNa);
-		
-	}
-	
-	public static DefaultTableModel findClientesByIsDentro(String dentro) {
-		return null;
-		
+		return false;
 	}
 	
 

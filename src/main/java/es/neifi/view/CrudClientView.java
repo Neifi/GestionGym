@@ -13,6 +13,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import es.neifi.controller.AdminController;
+import es.neifi.model.ClientesDao;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
@@ -327,24 +328,13 @@ public class CrudClientView extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (!textField.getText().isBlank() || textField.getText().isEmpty()) {
 					String options[] = new String[] {"dni","nombre","apellidos","fecha_inscripcion","fecha_nacimiento","dentro"};
-					String filter = comboBox.getModel().getSelectedItem().toString();
+					
+					int filterIndex = comboBox.getSelectedIndex();
+					String condition = options[filterIndex];
 					String value = textField.getText();
-					if (filter.equals("DNI")) {
-						table.setModel(AdminController.findClientesById(value));
-					} else if (filter.equals("NOMBRE")) {
-						table.setModel(AdminController.findClientesByNombre(value));
-					} else if (filter.equals("APELLIDOS")) {
-						table.setModel(AdminController.findClientesByApellidos(value));
-					} else if (filter.equals("FECHA INSCRIPCION")) {
-						table.setModel(AdminController.findClientesByFechaIns(value));
-					} else if (filter.equals("DENTRO")) {
-						table.setModel(AdminController.findClientesByIsDentro(value));
-					} else if (filter.equals("FECHA NACIMIENTO")) {
-						table.setModel(AdminController.findClientesByfFechaNa(value));
-					}
-
+					table.setModel(AdminController.findClientesByCondition(condition,value));
 				}else {
-					//table.setModel(AdminController.findAllClientes());
+					table.setModel(AdminController.findAllClientes());
 				}
 			}
 		});

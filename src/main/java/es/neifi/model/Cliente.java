@@ -1,5 +1,9 @@
 package es.neifi.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class Cliente {
 
 	private int id;
@@ -122,6 +126,24 @@ public class Cliente {
 		this.idGym = idGym;
 	}
 
+	public String setCurrentDate() {
+		DateFormat dateformat = new SimpleDateFormat("dd/mm/yyyy");
+		Calendar cal = Calendar.getInstance();
+		String currentDate = dateformat.format(cal);
+		return currentDate;
+		
+	}
+	
+	public int startEntryTimer() {
+		
+		return 0;
+	}
+	
+	public void stopEntryTimer() {
+		
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "[id=" + id + ", dni=" + dni + ", password=" + password + ", nombre=" + nombre + ", apellidos="

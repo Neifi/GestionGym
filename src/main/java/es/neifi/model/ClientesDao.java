@@ -8,6 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
@@ -38,10 +43,16 @@ public class ClientesDao {
 		return rs;
 	}
 	
-	private static ResultSet selectByDni(String dni) {
+	/**
+	 * Busca un cliente por alguna condicion pasada por parametro;
+	 * @param condition
+	 * @param value
+	 * @return El ResultSet de la consulta.
+	 */
+	private static ResultSet selectByCondition(String condition, String value) {
 		String select = "SELECT dni,nombre,apellidos,fecha_nacimiento,fecha_inscripcion,dentro,pagado FROM clientes"
-				+ " WHERE dni = ?";
-
+				+ " WHERE " +condition+ "= ?";
+		
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -50,7 +61,8 @@ public class ClientesDao {
 			conn = PostgreSQLConnection.getConnection();
 			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
 					ResultSet.TYPE_SCROLL_INSENSITIVE);
-			stmt.setString(1, dni);
+			
+			stmt.setString(1, value);
 
 			rs = stmt.executeQuery();
 			return rs;
@@ -61,102 +73,7 @@ public class ClientesDao {
 		}
 		return rs;
 	}
-	
-	private static ResultSet selectByNombre(String nombre) {
-		String select = "SELECT dni,nombre,apellidos,fecha_nacimiento,fecha_inscripcion,dentro,pagado FROM clientes"
-				+ " WHERE nombre = ?";
 
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = PostgreSQLConnection.getConnection();
-			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
-					ResultSet.TYPE_SCROLL_INSENSITIVE);
-			stmt.setString(1, nombre);
-
-			rs = stmt.executeQuery();
-			return rs;
-		}
-
-		catch (Exception e) {
-
-		}
-		return rs;
-	}
-	
-	private static ResultSet selectByApellidos(String apellidos) {
-		String select = "SELECT dni,nombre,apellidos,fecha_nacimiento,fecha_inscripcion,dentro,pagado FROM clientes"
-				+ " WHERE apellidos = ?";
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = PostgreSQLConnection.getConnection();
-			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
-					ResultSet.TYPE_SCROLL_INSENSITIVE);
-			stmt.setString(1, apellidos);
-
-			rs = stmt.executeQuery();
-			return rs;
-		}
-
-		catch (Exception e) {
-
-		}
-		return rs;
-	}
-	
-	private static ResultSet selectByFechaNa(String fechaNa) {
-		String select = "SELECT dni,nombre,apellidos,fecha_nacimiento,fecha_inscripcion,dentro,pagado FROM clientes"
-				+ " WHERE fecha_nacimiento = ?";
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = PostgreSQLConnection.getConnection();
-			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
-					ResultSet.TYPE_SCROLL_INSENSITIVE);
-			stmt.setString(1, fechaNa);
-
-			rs = stmt.executeQuery();
-			return rs;
-		}
-
-		catch (Exception e) {
-
-		}
-		return rs;
-	}
-	
-	private static ResultSet selectByFechaIns(String fechaIns) {
-		String select = "SELECT dni,nombre,apellidos,fecha_nacimiento,fecha_inscripcion,dentro,pagado FROM clientes"
-				+ " WHERE fecha_inscripcion = ?";
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = PostgreSQLConnection.getConnection();
-			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
-					ResultSet.TYPE_SCROLL_INSENSITIVE);
-			stmt.setString(1, fechaIns);
-
-			rs = stmt.executeQuery();
-			return rs;
-		}
-
-		catch (Exception e) {
-
-		}
-		return rs;
-	}
 	
 	
 	/**
@@ -186,7 +103,7 @@ public class ClientesDao {
 				data.add(vector);
 			}
 			return new DefaultTableModel(data, colNames);
-		} catch (SQLException e) {
+		} catch (SQLException | NullPointerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -194,9 +111,10 @@ public class ClientesDao {
 		
 	}
 	
-	protected static DefaultTableModel findByDni(String dni) {
+	
+	protected static DefaultTableModel findByCondition(String condition,String value) {
 		try {
-			ResultSet rs = selectByDni(dni);
+			ResultSet rs = selectByCondition(condition,value);
 			ResultSetMetaData metaData = rs.getMetaData();
 			
 			Vector<String> colNames = new Vector<String>(7, 1);
@@ -223,121 +141,7 @@ public class ClientesDao {
 		
 	}
 	
-	protected static DefaultTableModel findByNombre(String nombre) {
-		try {
-			ResultSet rs = selectByNombre(nombre);
-			ResultSetMetaData metaData = rs.getMetaData();
-			
-			Vector<String> colNames = new Vector<String>(7, 1);
-			int columnCount = metaData.getColumnCount();
-
-			for (int i = 1; i < columnCount; i++) {
-				colNames.add(metaData.getColumnName(i));
-			}
-
-			Vector<Vector<Object>> data = new Vector<Vector<Object>>(1, 2);
-			while (rs.next()) {
-				Vector<Object> vector = new Vector<Object>(20, 5);
-				for (int i = 1; i <= columnCount; i++) {
-					vector.add(rs.getObject(i));
-				}
-				data.add(vector);
-			}
-			return new DefaultTableModel(data, colNames);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new DefaultTableModel();
-		
-	}
 	
-	protected static DefaultTableModel findByApellidos(String apellidos) {
-		try {
-			ResultSet rs = selectByApellidos(apellidos);
-			ResultSetMetaData metaData = rs.getMetaData();
-			
-			Vector<String> colNames = new Vector<String>(7, 1);
-			int columnCount = metaData.getColumnCount();
-
-			for (int i = 1; i < columnCount; i++) {
-				colNames.add(metaData.getColumnName(i));
-			}
-
-			Vector<Vector<Object>> data = new Vector<Vector<Object>>(1, 2);
-			while (rs.next()) {
-				Vector<Object> vector = new Vector<Object>(20, 5);
-				for (int i = 1; i <= columnCount; i++) {
-					vector.add(rs.getObject(i));
-				}
-				data.add(vector);
-			}
-			return new DefaultTableModel(data, colNames);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new DefaultTableModel();
-		
-	}
-	
-	protected static DefaultTableModel findByFechaNa(String fechana) {
-		try {
-			ResultSet rs = selectByFechaNa(fechana);
-			ResultSetMetaData metaData = rs.getMetaData();
-			
-			Vector<String> colNames = new Vector<String>(7, 1);
-			int columnCount = metaData.getColumnCount();
-
-			for (int i = 1; i < columnCount; i++) {
-				colNames.add(metaData.getColumnName(i));
-			}
-
-			Vector<Vector<Object>> data = new Vector<Vector<Object>>(1, 2);
-			while (rs.next()) {
-				Vector<Object> vector = new Vector<Object>(20, 5);
-				for (int i = 1; i <= columnCount; i++) {
-					vector.add(rs.getObject(i));
-				}
-				data.add(vector);
-			}
-			return new DefaultTableModel(data, colNames);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new DefaultTableModel();
-		
-	}
-	
-	protected static DefaultTableModel findByFechaIns(String fechaIns) {
-		try {
-			ResultSet rs = selectByFechaIns(fechaIns);
-			ResultSetMetaData metaData = rs.getMetaData();
-			
-			Vector<String> colNames = new Vector<String>(7, 1);
-			int columnCount = metaData.getColumnCount();
-
-			for (int i = 1; i < columnCount; i++) {
-				colNames.add(metaData.getColumnName(i));
-			}
-
-			Vector<Vector<Object>> data = new Vector<Vector<Object>>(1, 2);
-			while (rs.next()) {
-				Vector<Object> vector = new Vector<Object>(20, 5);
-				for (int i = 1; i <= columnCount; i++) {
-					vector.add(rs.getObject(i));
-				}
-				data.add(vector);
-			}
-			return new DefaultTableModel(data, colNames);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new DefaultTableModel();
-		
-	}
 	
 	protected static boolean deleteCliente(String dni) {
 		String delete = "DELETE FROM clientes WHERE dni = ?";
@@ -396,7 +200,8 @@ public class ClientesDao {
 		
 	}
 	
-	protected static boolean createCliente(Cliente cliente) {
+
+	protected static boolean createCliente(Cliente persona) {
 		
 		String create = "INSERT INTO clientes ";
 		

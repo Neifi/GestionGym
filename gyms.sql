@@ -2,6 +2,8 @@
 CREATE DATABASE gestiongym;
 \c gestiongym
 
+/*EXTENSION pgcrypto */
+CREATE EXTENSION pgcrypto
 /*TABLA GYMS*/
 create table gyms (
 	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
