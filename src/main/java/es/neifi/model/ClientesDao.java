@@ -201,10 +201,96 @@ public class ClientesDao {
 	}
 	
 
-	protected static boolean createCliente(Cliente persona) {
+	protected static boolean createCliente(Cliente cliente) {
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		String insert = "INSERT INTO clientes "
+				+ "(dni,password,nombre,apellidos,fecha_nacimiento,pagado,dentro,fecha_inscripcion,es_admin)"
+				+"VALUES"
+				+ "(?,?,?,?,?,?,?,?,?)";
 		
-		String create = "INSERT INTO clientes ";
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+			String encryptPassword = "crypt('"+cliente.getNombre()+"',gen_salt('bf'))";
+			
+			stmt.setString(1, cliente.getDni());
+			stmt.setString(2, encryptPassword);
+			stmt.setString(3, cliente.getNombre());
+			stmt.setString(4, cliente.getApellidos());
+			stmt.setString(5, cliente.getFechaNacimiento());
+			stmt.setString(6, "t");//pagado
+			stmt.setString(7, "f");//dentro
+			stmt.setString(8, cliente.getFechaInscripcion());
+			stmt.setString(9, cliente.getEs_admin());//admin
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		return false;
+	}
+	
+	public static void registrarEntrada(Cliente cliente) {
+		Connection conn;
+		PreparedStatement stmt = null;
+		String insert = "INSERT INTO check_horas "
+				+ "(dni_cliente,id_gym,dia,mes,anio,tipo_registro)"
+				+ "VALUES (?,?,?,?,?,?)";
+		
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+			
+			String fechaEntrada[] = cliente.getEntryDate();
+			
+			//TODO mover al controller*******
+				cliente.startEntryTimer();
+				cliente.setTipoRegistro("E");
+			//*******************************
+			
+			stmt.setString(1, cliente.getDni());
+			stmt.setInt(2, cliente.getIdGym());
+			stmt.setString(3,fechaEntrada[0]);
+			stmt.setString(4, fechaEntrada[1]);
+			stmt.setString(5, fechaEntrada[2]);
+			stmt.setString(6, cliente.getTipoRegistro());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public static void registrarSalida(Cliente cliente) {
+		
+		Connection conn;
+		PreparedStatement stmt = null;
+		String insert = "INSERT INTO check_horas "
+				+ "(dni_cliente,id_gym,dia,mes,anio,tipo_registro)"
+				+ "VALUES (?,?,?,?,?,?)";
+		
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+			
+			//TODO mover al controller
+			int hours = cliente.stopEntryTimer();
+			cliente.setTipoRegistro("S");
+			String fechaEntrada[] = cliente.getEntryDate();
+			
+			stmt.setString(1, cliente.getDni());
+			stmt.setInt(2, cliente.getIdGym());
+			stmt.setString(3,fechaEntrada[0]);
+			stmt.setString(4, fechaEntrada[1]);
+			stmt.setString(5, fechaEntrada[2]);
+			stmt.setString(6, cliente.getTipoRegistro());
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

@@ -15,9 +15,11 @@ public class Cliente {
 	private String fechaInscripcion;
 	private boolean isDentro;
 	private boolean isPagado;
-	private char es_admin;
+	private String es_admin;
 	private int idGym;
-
+	private float elapsedTime;
+	private String tipoRegistro;
+	private String[] fechaEntrada;
 	public Cliente() {
 
 	}
@@ -31,15 +33,15 @@ public class Cliente {
 		super();
 		this.dni = dni;
 	}
-	
-	public Cliente(String dni,String password,String nombre,String apellidos,String fechaNacimiento) {
+
+	public Cliente(String dni, String password, String nombre, String apellidos) {
 		this.dni = dni;
 		this.password = password;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.fechaNacimiento = fechaNacimiento;
+		;
 	}
-	
+
 	public Cliente(int id, String dni, String password, String nombre, String apellidos, String fechaNacimiento,
 			String fechaInscripcion, boolean isDentro, boolean isPagado, int idGym) {
 		super();
@@ -54,8 +56,6 @@ public class Cliente {
 		this.isPagado = isPagado;
 		this.idGym = idGym;
 	}
-
-
 
 	public int getId() {
 		return id;
@@ -137,31 +137,58 @@ public class Cliente {
 		this.idGym = idGym;
 	}
 
-	public String setCurrentDate() {
+	public String getEs_admin() {
+		return es_admin;
+	}
+
+	public void setEs_admin(String es_admin) {
+		this.es_admin = es_admin;
+	}
+
+	public float getElapsedTime() {
+		return elapsedTime;
+	}
+
+	public String getTipoRegistro() {
+		return tipoRegistro;
+	}
+
+	public void setTipoRegistro(String tipoRegistro) {
+		this.tipoRegistro = tipoRegistro;
+	}
+
+	/**
+	 * Devuelve un String array de 3 posiciones, [dia,mes,año]
+	 * 
+	 * @return fecha en array
+	 */
+	public String[] getEntryDate() {
 		DateFormat dateformat = new SimpleDateFormat("dd/mm/yyyy");
 		Calendar cal = Calendar.getInstance();
 		String currentDate = dateformat.format(cal);
-		return currentDate;
-		
+		this.fechaEntrada = currentDate.split("/");
+		return fechaEntrada;
+
 	}
-	
-	public int startEntryTimer() {
-		
-		return 0;
+
+	public void startEntryTimer() {
+		long start = System.currentTimeMillis();
+		long elapsedTimeMillis = System.currentTimeMillis() - start;
+		// minutos simulando horas
+		elapsedTime = elapsedTimeMillis / (60 * 1000F);
 	}
-	
-	public void stopEntryTimer() {
-		
+
+	public int stopEntryTimer() {
+		int hours = (int) this.elapsedTime;
+		elapsedTime = 0;
+		return hours;
 	}
-	
-	
+
 	@Override
 	public String toString() {
 		return "[id=" + id + ", dni=" + dni + ", password=" + password + ", nombre=" + nombre + ", apellidos="
 				+ apellidos + ", fechaNacimiento=" + fechaNacimiento + ", fechaInscripcion=" + fechaInscripcion
 				+ ", isDentro=" + isDentro + ", isPagado=" + isPagado + ", idGym=" + idGym + "]";
 	}
-	
-	
 
 }

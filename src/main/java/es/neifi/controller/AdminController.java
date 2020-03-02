@@ -24,16 +24,38 @@ public class AdminController extends ClientesDao {
 
 	public static boolean createCliente(String dni, String password, String nombre, String apellidos,
 			String fechaNacimiento) {
+		Cliente cliente = new Cliente(dni,password,nombre,apellidos);
+		String fechaInscripcion = setFechaInscipcion(cliente);
+		String fechaNa = " ";
+		cliente.setFechaInscripcion(fechaInscripcion);
+		if(checkFormatoFecha(fechaNacimiento)) {
+			fechaNa = fechaNacimiento;
+			cliente.setFechaNacimiento(fechaNa);
+			cliente.setEs_admin("f");
+			ClientesDao.createCliente(cliente);
+			return true;
+		}else {
+			throw new RuntimeException("Formato de fecha incorrecta");
+		}
 		
-		Cliente cliente = new Cliente(dni,password,nombre,apellidos,fechaNacimiento);
-		
-		return false;
 	}
 
 	public static boolean createAdmin(String dni, String password, String nombre, String apellidos,
-			char fechaNacimiento) {
-
-		return false;
+			String fechaNacimiento) {
+		Cliente cliente = new Cliente(dni,password,nombre,apellidos);
+		String fechaInscripcion = setFechaInscipcion(cliente);
+		String fechaNa = " ";
+		cliente.setFechaInscripcion(fechaInscripcion);
+		if(checkFormatoFecha(fechaNacimiento)) {
+			fechaNa = fechaNacimiento;
+			cliente.setFechaNacimiento(fechaNa);
+			cliente.setEs_admin("t");
+			ClientesDao.createCliente(cliente);
+			return true;
+		}else {
+			throw new RuntimeException("Formato de fecha incorrecta");
+		}
+		
 	}
 
 	private static String setFechaInscipcion(Cliente cliente) {
