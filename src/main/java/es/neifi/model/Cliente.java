@@ -15,6 +15,7 @@ public class Cliente {
 	private String fechaInscripcion;
 	private boolean isDentro;
 	private boolean isPagado;
+	private char es_admin;
 	private int idGym;
 
 	public Cliente() {
@@ -30,7 +31,15 @@ public class Cliente {
 		super();
 		this.dni = dni;
 	}
-
+	
+	public Cliente(String dni,String password,String nombre,String apellidos,String fechaNacimiento) {
+		this.dni = dni;
+		this.password = password;
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	
 	public Cliente(int id, String dni, String password, String nombre, String apellidos, String fechaNacimiento,
 			String fechaInscripcion, boolean isDentro, boolean isPagado, int idGym) {
 		super();
@@ -45,6 +54,8 @@ public class Cliente {
 		this.isPagado = isPagado;
 		this.idGym = idGym;
 	}
+
+
 
 	public int getId() {
 		return id;
