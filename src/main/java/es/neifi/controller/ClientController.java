@@ -1,15 +1,24 @@
 package es.neifi.controller;
 
-import es.neifi.model.ClientesDao;
+import es.neifi.model.Cliente;
+import es.neifi.model.GestionGymDao;
 
 public class ClientController {
 	
 	public static void entrar() {
-		ClientesDao.registrarEntrada(cliente);
+		GestionGymDao.registrarEntrada(new Cliente());
 	}
 	
 	public static void salir() {
-		ClientesDao.registrarSalida(cliente);
+		GestionGymDao.registrarSalida(new Cliente());
+	}
+	
+	public static void selectAllRegistros() {
+		
+	}
+	
+	public static void selectRegistroByDate() {
+		
 	}
 	
 }

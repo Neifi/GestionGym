@@ -7,18 +7,18 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 import es.neifi.model.Cliente;
-import es.neifi.model.ClientesDao;
+import es.neifi.model.GestionGymDao;
 
-public class AdminController extends ClientesDao {
+public class AdminController extends GestionGymDao {
 
 	public static DefaultTableModel findAllClientes() {
 
-		return ClientesDao.findAllClientes();
+		return GestionGymDao.findAllClientes();
 
 	}
 
 	public static DefaultTableModel findClientesByCondition(String condition, String value) {
-		return ClientesDao.findByCondition(condition, value);
+		return GestionGymDao.findByCondition(condition, value);
 
 	}
 
@@ -32,7 +32,7 @@ public class AdminController extends ClientesDao {
 			fechaNa = fechaNacimiento;
 			cliente.setFechaNacimiento(fechaNa);
 			cliente.setEs_admin("f");
-			ClientesDao.createCliente(cliente);
+			GestionGymDao.createCliente(cliente);
 			return true;
 		}else {
 			throw new RuntimeException("Formato de fecha incorrecta");
@@ -50,7 +50,7 @@ public class AdminController extends ClientesDao {
 			fechaNa = fechaNacimiento;
 			cliente.setFechaNacimiento(fechaNa);
 			cliente.setEs_admin("t");
-			ClientesDao.createCliente(cliente);
+			GestionGymDao.createCliente(cliente);
 			return true;
 		}else {
 			throw new RuntimeException("Formato de fecha incorrecta");

@@ -29,9 +29,9 @@ public class LoginController {
 
 	/**
 	 * Comprueba las credenciales introducidas por el usuario en la base de datos.
-	 * Las consultas se hacen en las tablas clientes y gyms , para comprobar que el
-	 * usuario es admin(un gimnasio) o un simple cliente. Dependiendo del usuario
-	 * retorna un valor.
+	 * Las consultas se hacen en las tablas clientes , para comprobar que el
+	 * usuario es admin o un simple cliente. Dependiendo del usuario
+	 * retorna un valor definido en el enum.
 	 *
 	 * @param username
 	 * @param password

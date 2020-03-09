@@ -13,7 +13,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import es.neifi.controller.AdminController;
-import es.neifi.model.ClientesDao;
+import es.neifi.model.GestionGymDao;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
@@ -129,7 +129,7 @@ public class CrudClientView extends JFrame {
 		leftColumnBrand.add(btnRegistros);
 		JPanel leftColumnMenu = new JPanel();
 		leftColumnMenu.setBackground(new Color(30, 144, 255));
-		leftColumnMenu.setBounds(0, 30, 246, 70);
+		leftColumnMenu.setBounds(0, 0, 246, 100);
 		getContentPane().add(leftColumnMenu);
 		leftColumnMenu.setLayout(null);
 
