@@ -91,18 +91,179 @@ public class CrudClientView extends JFrame {
 		// TODO get maxscreen size
 		setBounds(0, 0, 1920, 1080);
 
-		JPanel leftColumnBrand = new JPanel();
-		leftColumnBrand.setBackground(new Color(30, 144, 255));
-		leftColumnBrand.setBounds(0, 100, 246, 980);
-		getContentPane().add(leftColumnBrand);
-		leftColumnBrand.setLayout(null);
+		JPanel clientesPanel = new JPanel();
+		clientesPanel.setBackground(Color.ORANGE);
+		clientesPanel.setBounds(263, 30, 1641, 1050);
+		getContentPane().add(clientesPanel);
+		clientesPanel.setLayout(null);
 
+		JPanel leftMenu = new JPanel();
+		leftMenu.setBackground(new Color(30, 144, 255));
+		leftMenu.setBounds(0, 100, 246, 980);
+		getContentPane().add(leftMenu);
+		leftMenu.setLayout(null);
+
+		setLeftButtons(leftMenu);
+
+		JPanel brand = new JPanel();
+		brand.setBackground(new Color(30, 144, 255));
+		brand.setBounds(0, 0, 246, 100);
+		getContentPane().add(brand);
+		brand.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("GESTIÓN GYM PRO");
+		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
+		lblNewLabel.setBounds(33, 11, 180, 44);
+		brand.add(lblNewLabel);
+
+		JPanel dataPanel = new JPanel();
+		dataPanel.setBounds(1289, 70, 279, 920);
+		clientesPanel.add(dataPanel);
+		dataPanel.setBackground(new Color(30, 144, 255));
+		dataPanel.setBorder(BorderFactory.createEmptyBorder());
+		dataPanel.setLayout(null);
+		clientesPanel.add(dataPanel);
+
+		setLabels(dataPanel);
+
+		JButton btnGuardar_1 = new JButton("Guardar");
+		btnGuardar_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				for (JTextField jTextField : textsFields) {
+					jTextField.setEditable(false);
+					// table.setModel(AdminController.findAllClientes());
+				}
+			}
+		});
+		btnGuardar_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		btnGuardar_1.setFocusPainted(true);
+		btnGuardar_1.setBorderPainted(false);
+		btnGuardar_1.setBounds(39, 361, 184, 52);
+		dataPanel.add(btnGuardar_1);
+
+		setTable();
+
+		editOnMouseHover();
+
+		dni.setEditable(false);
+		nombre.setEditable(false);
+		apellidos.setEditable(false);
+		fechaIns.setEditable(false);
+		fechaNa.setEditable(false);
+		textsFields.add(dni);
+		textsFields.add(nombre);
+		textsFields.add(apellidos);
+		textsFields.add(fechaIns);
+
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+
+				dni.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+				nombre.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+				apellidos.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+				fechaIns.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+				fechaNa.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			}
+		});
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportBorder(null);
+		scrollPane.setBounds(new Rectangle(85, 119, 1202, 871));
+		scrollPane.getViewport().setBackground(Color.WHITE);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		clientesPanel.add(scrollPane);
+		scrollPane.setViewportView(table);
+
+		textField = new JTextField();
+		textField.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		textField.setBounds(284, 70, 860, 38);
+		clientesPanel.add(textField);
+		textField.setColumns(10);
+
+		comboBox = new JComboBox();
+		comboBox.setForeground(Color.ORANGE);
+		comboBox.setModel(new DefaultComboBoxModel(
+				new String[] { "DNI", "NOMBRE", "APELLIDOS", "FECHA INSCRIPCION", "FECHA NACIMIENTO", "DENTRO" }));
+		comboBox.setBackground(Color.DARK_GRAY);
+		comboBox.setBounds(85, 70, 189, 38);
+		clientesPanel.add(comboBox);
+
+		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (!textField.getText().isBlank() || textField.getText().isEmpty()) {
+					String options[] = new String[] { "dni", "nombre", "apellidos", "fecha_inscripcion",
+							"fecha_nacimiento", "dentro" };
+
+					int filterIndex = comboBox.getSelectedIndex();
+					String condition = options[filterIndex];
+					String value = textField.getText();
+					table.setModel(AdminController.findClientesByCondition(condition, value));
+				} else {
+					table.setModel(AdminController.findAllClientes());
+				}
+			}
+		});
+		btnBuscar.setForeground(Color.ORANGE);
+		btnBuscar.setBackground(Color.DARK_GRAY);
+		btnBuscar.setBounds(1147, 70, 132, 38);
+		clientesPanel.add(btnBuscar);
+
+		JPanel altasPanel = new JPanel();
+		altasPanel.setBounds(263, 30, 1641, 1050);
+		getContentPane().add(altasPanel);
+
+		// getContentPane().add(altasPanel);
+
+		// card.add("viewData",vewDataEdit);
+		// card.add("altasPanel",altasPanel);
+
+		// panel.add("leftColumnMenu", leftColumnMenu);
+		// panel.add("dataPanel", dataPanel);
+
+	}
+
+	private void setTable() {
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setShowGrid(false);
+		table.setShowVerticalLines(false);
+		table.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		table.setBackground(Color.WHITE);
+		table.setBorder(BorderFactory.createEmptyBorder());
+		table.setRowMargin(10);
+		table.setRowHeight(25);
+		table.setAlignmentX(Component.CENTER_ALIGNMENT);
+		table.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
+		table.getTableHeader().setBackground(Color.DARK_GRAY);
+		table.getTableHeader().setBorder(BorderFactory.createEmptyBorder());
+		table.getTableHeader().setForeground(Color.WHITE);
+		table.setModel(AdminController.findAllClientes());
+		// table.getColumnModel().getColumn(5).setCellRenderer(insideIconRenderer);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int i = 0; i < table.getColumnCount(); i++) {
+			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+		}
+		DefaultTableCellRenderer insideIconRenderer = new DefaultTableCellRenderer();
+		ImageIcon icon = new ImageIcon("C:\\Users\\Neifi\\eclipse-workspace\\Gestiongym\\comprobar.png");
+		for (int i = 0; i < table.getRowCount(); i++) {
+
+		}
+		insideIconRenderer.setIcon(icon);
+		insideIconRenderer.setHorizontalAlignment(JLabel.CENTER);
+		textsFields = new Vector<JTextField>();
+	}
+
+	private void setLeftButtons(JPanel leftMenu) {
 		JButton btnClientes = new JButton("Clientes");
 		btnClientes.setBackground(Color.DARK_GRAY);
 		btnClientes.setForeground(Color.ORANGE);
 		btnClientes.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnClientes.setBounds(0, 2, 246, 70);
-		leftColumnBrand.add(btnClientes);
+		leftMenu.add(btnClientes);
 		btnClientes.setBorderPainted(false);
 		btnClientes.setFocusPainted(true);
 
@@ -115,7 +276,7 @@ public class CrudClientView extends JFrame {
 		btnAltas.setForeground(Color.ORANGE);
 		btnAltas.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		btnAltas.setBounds(0, 74, 246, 70);
-		leftColumnBrand.add(btnAltas);
+		leftMenu.add(btnAltas);
 		btnAltas.setBorderPainted(false);
 		btnAltas.setFocusPainted(true);
 
@@ -126,31 +287,10 @@ public class CrudClientView extends JFrame {
 		btnRegistros.setBorderPainted(false);
 		btnRegistros.setBackground(Color.DARK_GRAY);
 		btnRegistros.setBounds(0, 146, 246, 70);
-		leftColumnBrand.add(btnRegistros);
-		JPanel leftColumnMenu = new JPanel();
-		leftColumnMenu.setBackground(new Color(30, 144, 255));
-		leftColumnMenu.setBounds(0, 0, 246, 100);
-		getContentPane().add(leftColumnMenu);
-		leftColumnMenu.setLayout(null);
+		leftMenu.add(btnRegistros);
+	}
 
-		JLabel lblNewLabel = new JLabel("GESTIÓN GYM PRO");
-		lblNewLabel.setFont(new Font("Segoe UI", Font.BOLD, 19));
-		lblNewLabel.setBounds(33, 11, 180, 44);
-		leftColumnMenu.add(lblNewLabel);
-
-		JPanel vewDataEdit = new JPanel();
-		vewDataEdit.setBackground(Color.ORANGE);
-		vewDataEdit.setBounds(245, 30, 1659, 1050);
-		getContentPane().add(vewDataEdit);
-		vewDataEdit.setLayout(null);
-
-		JPanel dataPanel = new JPanel();
-		dataPanel.setBounds(1289, 70, 279, 920);
-		vewDataEdit.add(dataPanel);
-		dataPanel.setBackground(new Color(30, 144, 255));
-		dataPanel.setBorder(BorderFactory.createEmptyBorder());
-		dataPanel.setLayout(null);
-
+	private void setLabels(JPanel dataPanel) {
 		JLabel lblDni = new JLabel("DNI");
 		lblDni.setFont(new Font("Segoe UI", Font.BOLD, 18));
 		lblDni.setBounds(39, 50, 60, 20);
@@ -212,76 +352,11 @@ public class CrudClientView extends JFrame {
 		fechaNa.setBounds(39, 275, 184, 20);
 		fechaNa.setBorder(BorderFactory.createEmptyBorder());
 		dataPanel.add(fechaNa);
+	}
 
-		JButton btnGuardar_1 = new JButton("Guardar");
-		btnGuardar_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				for (JTextField jTextField : textsFields) {
-					jTextField.setEditable(false);
-					// table.setModel(AdminController.findAllClientes());
-				}
-			}
-		});
-		btnGuardar_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		btnGuardar_1.setFocusPainted(true);
-		btnGuardar_1.setBorderPainted(false);
-		btnGuardar_1.setBounds(39, 361, 184, 52);
-		dataPanel.add(btnGuardar_1);
-
-		table = new JTable();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setShowGrid(false);
-		table.setShowVerticalLines(false);
-		table.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		table.setBackground(Color.WHITE);
-		table.setBorder(BorderFactory.createEmptyBorder());
-		table.setRowMargin(10);
-		table.setRowHeight(25);
-		table.setAlignmentX(Component.CENTER_ALIGNMENT);
-		table.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
-		table.getTableHeader().setBackground(Color.DARK_GRAY);
-		table.getTableHeader().setBorder(BorderFactory.createEmptyBorder());
-		table.getTableHeader().setForeground(Color.WHITE);
-		table.setModel(AdminController.findAllClientes());
-
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		for (int i = 0; i < table.getColumnCount(); i++) {
-			table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-		}
-		DefaultTableCellRenderer insideIconRenderer = new DefaultTableCellRenderer();
-		ImageIcon icon = new ImageIcon("C:\\Users\\Neifi\\eclipse-workspace\\Gestiongym\\comprobar.png");
-		for (int i = 0; i < table.getRowCount(); i++) {
-
-		}
-		insideIconRenderer.setIcon(icon);
-		insideIconRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(5).setCellRenderer(insideIconRenderer);
-
-		dni.setEditable(false);
-		nombre.setEditable(false);
-		apellidos.setEditable(false);
-		fechaIns.setEditable(false);
-		fechaNa.setEditable(false);
-		textsFields = new Vector<JTextField>();
-		textsFields.add(dni);
-		textsFields.add(nombre);
-		textsFields.add(apellidos);
-		textsFields.add(fechaIns);
-
-		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-
-				dni.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-				nombre.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-				apellidos.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-				fechaIns.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-				fechaNa.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-			}
-		});
-
+	private void editOnMouseHover() {
+		// Cuando pasas el raton por encima de un campo cambia el cursor,
+		// al hacer click se hace editable.
 		for (final JTextField texts : textsFields) {
 			texts.addMouseListener(new MouseAdapter() {
 				@Override
@@ -301,55 +376,5 @@ public class CrudClientView extends JFrame {
 				}
 			});
 		}
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportBorder(null);
-		scrollPane.setBounds(new Rectangle(85, 119, 1202, 871));
-		scrollPane.getViewport().setBackground(Color.WHITE);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
-		vewDataEdit.add(scrollPane);
-		scrollPane.setViewportView(table);
-
-		textField = new JTextField();
-		textField.setFont(new Font("Segoe UI", Font.BOLD, 18));
-		textField.setBounds(284, 70, 860, 38);
-		vewDataEdit.add(textField);
-		textField.setColumns(10);
-
-		comboBox = new JComboBox();
-		comboBox.setForeground(Color.ORANGE);
-		comboBox.setModel(new DefaultComboBoxModel(
-				new String[] { "DNI", "NOMBRE", "APELLIDOS", "FECHA INSCRIPCION", "FECHA NACIMIENTO", "DENTRO" }));
-		comboBox.setBackground(Color.DARK_GRAY);
-		comboBox.setBounds(85, 70, 189, 38);
-		vewDataEdit.add(comboBox);
-
-		JButton btnBuscar = new JButton("Buscar");
-		btnBuscar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (!textField.getText().isBlank() || textField.getText().isEmpty()) {
-					String options[] = new String[] {"dni","nombre","apellidos","fecha_inscripcion","fecha_nacimiento","dentro"};
-					
-					int filterIndex = comboBox.getSelectedIndex();
-					String condition = options[filterIndex];
-					String value = textField.getText();
-					table.setModel(AdminController.findClientesByCondition(condition,value));
-				}else {
-					table.setModel(AdminController.findAllClientes());
-				}
-			}
-		});
-		btnBuscar.setForeground(Color.ORANGE);
-		btnBuscar.setBackground(Color.DARK_GRAY);
-		btnBuscar.setBounds(1147, 70, 132, 38);
-		vewDataEdit.add(btnBuscar);
-
-		JPanel card = new JPanel();
-		card.setBackground(Color.ORANGE);
-		card.setBounds(245, 30, 1675, 1050);
-		getContentPane().add(card);
-		card.setLayout(new CardLayout());
-		// panel.add("leftColumnMenu", leftColumnMenu);
-		// panel.add("dataPanel", dataPanel);
-
 	}
 }
