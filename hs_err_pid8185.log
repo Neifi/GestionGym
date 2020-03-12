@@ -1,0 +1,33 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fc2a0d46401, pid=8185, tid=29030
+#
+# JRE version: OpenJDK Runtime Environment (11.0.6+10) (build 11.0.6+10-post-Ubuntu-1ubuntu118.04.1)
+# Java VM: OpenJDK 64-Bit Server VM (11.0.6+10-post-Ubuntu-1ubuntu118.04.1, mixed mode, sharing, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libjimage.so+0x2401]
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugs.launchpad.net/ubuntu/+source/openjdk-lts
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dfile.encoding=UTF-8 es.neifi.Gestiongym.MainForm
+
+Host: AMD Ryzen 5 1500X Quad-Core Processor, 8 cores, 7G, Linux Mint 19.1 Tessa
+Time: Wed Mar 11 20:02:51 2020 CET elapsed time: 20312 seconds (0d 5h 38m 32s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007fc214003000):  JavaThread "XToolkt-Shutdown-Thread" [_thread_in_vm, id=29030, stack(0x00007fc29beff000,0x00007fc29c000000)]
+
+Stack: [0x00007fc29beff000,0x00007fc29c000000],  sp=0x00007fc29bffcfc0,  free space=1015k
+Native frames: (J=compiled Java code, A=aot compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libjimage.so+0x2401]
+C  [libjimage.so+0x30ea]
+C  [libjimage.so+0x35c6]  JIMAGE_FindResource+0xd6
+V  [libjvm.so+0x59098e]

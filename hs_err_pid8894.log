@@ -1,0 +1,144 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007fd865084401, pid=8894, tid=29100
+#
+# JRE version: OpenJDK Runtime Environment (11.0.6+10) (build 11.0.6+10-post-Ubuntu-1ubuntu118.04.1)
+# Java VM: OpenJDK 64-Bit Server VM (11.0.6+10-post-Ubuntu-1ubuntu118.04.1, mixed mode, sharing, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libjimage.so+0x2401]
+#
+# No core dump will be written. Core dumps have been disabled. To enable core dumping, try "ulimit -c unlimited" before starting Java again
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugs.launchpad.net/ubuntu/+source/openjdk-lts
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Dfile.encoding=UTF-8 es.neifi.Gestiongym.MainForm
+
+Host: AMD Ryzen 5 1500X Quad-Core Processor, 8 cores, 7G, Linux Mint 19.1 Tessa
+Time: Wed Mar 11 20:02:52 2020 CET elapsed time: 19627 seconds (0d 5h 27m 7s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00007fd7d800c800):  JavaThread "XToolkt-Shutdown-Thread" [_thread_in_vm, id=29100, stack(0x00007fd85fdfe000,0x00007fd85feff000)]
+
+Stack: [0x00007fd85fdfe000,0x00007fd85feff000],  sp=0x00007fd85fefbfc0,  free space=1015k
+Native frames: (J=compiled Java code, A=aot compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [libjimage.so+0x2401]
+C  [libjimage.so+0x30ea]
+C  [libjimage.so+0x35c6]  JIMAGE_FindResource+0xd6
+V  [libjvm.so+0x59098e]
+V  [libjvm.so+0x5936f0]
+V  [libjvm.so+0xd49c05]
+V  [libjvm.so+0xd4759a]
+V  [libjvm.so+0xd4a192]
+V  [libjvm.so+0x646187]
+V  [libjvm.so+0xa3788a]
+V  [libjvm.so+0x83e9f6]
+V  [libjvm.so+0x83f8ed]
+j  sun.awt.X11.XToolkit.lambda$init$0()V+0 java.desktop@11.0.6
+j  sun.awt.X11.XToolkit$$Lambda$9.run()V+4 java.desktop@11.0.6
+j  java.lang.Thread.run()V+11 java.base@11.0.6
+v  ~StubRoutines::call_stub
+V  [libjvm.so+0x8493b9]
+V  [libjvm.so+0x8474fd]
+V  [libjvm.so+0x8f20dc]
+V  [libjvm.so+0xd83203]
+V  [libjvm.so+0xd834d5]
+V  [libjvm.so+0xd7f20a]
+V  [libjvm.so+0xbcf1fe]
+
+Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
+j  sun.awt.X11.XToolkit.lambda$init$0()V+0 java.desktop@11.0.6
+j  sun.awt.X11.XToolkit$$Lambda$9.run()V+4 java.desktop@11.0.6
+j  java.lang.Thread.run()V+11 java.base@11.0.6
+v  ~StubRoutines::call_stub
+
+siginfo: si_signo: 11 (SIGSEGV), si_code: 1 (SEGV_MAPERR), si_addr: 0x00007fd857926f28
+
+Register to memory mapping:
+
+RAX=0x0000000000005bc3 is an unknown value
+RBX=0x00007fd85fefc071 is pointing into the stack for thread: 0x00007fd7d800c800
+RCX=0x00007fd85791001c is an unknown value
+RDX=0x0000000000005bc3 is an unknown value
+RSP=0x00007fd85fefbfc0 is pointing into the stack for thread: 0x00007fd7d800c800
+RBP=0x00007fd85fefbfe0 is pointing into the stack for thread: 0x00007fd7d800c800
+RSI=0x00007fd85fefc070 is pointing into the stack for thread: 0x00007fd7d800c800
+RDI=0x00007fd865287130: <offset 0x0000000000205130> in /usr/lib/jvm/java-11-openjdk-amd64/lib/libjimage.so at 0x00007fd865082000
+R8 =0x0 is NULL
+R9 =
+[error occurred during error reporting (printing register info), id 0xb, SIGSEGV (0xb) at pc=0x00007fd86737ae20]
+
+Registers:
+RAX=0x0000000000005bc3, RBX=0x00007fd85fefc071, RCX=0x00007fd85791001c, RDX=0x0000000000005bc3
+RSP=0x00007fd85fefbfc0, RBP=0x00007fd85fefbfe0, RSI=0x00007fd85fefc070, RDI=0x00007fd865287130
+R8 =0x0000000000000000, R9 =0x00000000ca0d71f0, R10=0x00007fd85fefc094, R11=0x50796172546d6574
+R12=0x00007fd85fefc070, R13=0x00000000000083a0, R14=0x00007fd85fefd108, R15=0x00007fd81031d8c0
+RIP=0x00007fd865084401, EFLAGS=0x0000000000010212, CSGSFS=0x002b000000000033, ERR=0x0000000000000004
+  TRAPNO=0x000000000000000e
+
+Top of Stack: (sp=0x00007fd85fefbfc0)
+0x00007fd85fefbfc0:   0000000000000000 00007fd860021f90
+0x00007fd85fefbfd0:   0000000000000000 00007fd85fefc070
+0x00007fd85fefbfe0:   00007fd85fefc050 00007fd8650850ea
+0x00007fd85fefbff0:   0000000000000000 0000000000000000 
+
+Instructions: (pc=0x00007fd865084401)
+0x00007fd865084301:   c5 4c 01 e3 48 89 ce e8 d3 f3 ff ff e9 69 fd ff
+0x00007fd865084311:   ff 89 d1 0f b7 74 08 fe 66 41 89 74 0e fe e9 7a
+0x00007fd865084321:   fe ff ff 0f 1f 40 00 8b 08 49 8d 1c 16 41 89 0e
+0x00007fd865084331:   89 d1 8b 74 08 fc 41 89 74 0e fc 48 8d 34 10 48
+0x00007fd865084341:   89 75 b8 e9 0b fe ff ff 0f 1f 80 00 00 00 00 0f
+0x00007fd865084351:   b6 17 55 89 f0 48 89 e5 84 d2 74 22 48 8d 4f 01
+0x00007fd865084361:   0f 1f 80 00 00 00 00 48 83 c1 01 0f b6 f2 0f b6
+0x00007fd865084371:   51 ff 69 c0 93 01 00 01 31 f0 84 d2 75 e9 25 ff
+0x00007fd865084381:   ff ff 7f 5d c3 66 2e 0f 1f 84 00 00 00 00 00 48
+0x00007fd865084391:   85 d2 0f 84 dd 00 00 00 85 c9 0f 84 d5 00 00 00
+0x00007fd8650843a1:   55 48 89 e5 41 55 41 54 53 48 8d 5e 01 48 83 ec
+0x00007fd8650843b1:   08 44 0f b6 06 45 84 c0 0f 84 a9 00 00 00 49 89
+0x00007fd8650843c1:   da b8 93 01 00 01 66 0f 1f 84 00 00 00 00 00 49
+0x00007fd8650843d1:   83 c2 01 44 69 c8 93 01 00 01 41 0f b6 c0 45 0f
+0x00007fd8650843e1:   b6 42 ff 44 31 c8 45 84 c0 75 e4 25 ff ff ff 7f
+0x00007fd8650843f1:   41 89 cd 48 89 d1 31 d2 41 f7 f5 49 89 f4 89 d0
+0x00007fd865084401:   8b 34 81 48 8b 07 ff 50 20 83 f8 00 7e 41 41 0f
+0x00007fd865084411:   b6 14 24 84 d2 74 1c 0f 1f 84 00 00 00 00 00 69
+0x00007fd865084421:   c0 93 01 00 01 48 83 c3 01 31 d0 0f b6 53 ff 84
+0x00007fd865084431:   d2 75 ec 25 ff ff ff 7f 31 d2 41 f7 f5 48 83 c4
+0x00007fd865084441:   08 89 d0 5b 41 5c 41 5d 5d c3 0f 1f 44 00 00 74
+0x00007fd865084451:   1d f7 d0 48 83 c4 08 89 c2 5b 89 d0 41 5c 41 5d
+0x00007fd865084461:   5d c3 0f 1f 44 00 00 b8 93 01 00 01 eb 82 ba ff
+0x00007fd865084471:   ff ff ff eb c8 83 ca ff 89 d0 c3 0f 1f 40 00 0f
+0x00007fd865084481:   b6 17 55 48 89 f8 48 89 e5 84 d2 75 15 eb 1a 38
+0x00007fd865084491:   ca 75 1c 48 83 c0 01 0f b6 10 48 83 c6 01 84 d2
+0x00007fd8650844a1:   74 07 0f b6 0e 84 c9 75 e6 5d c3 0f 1f 40 00 31
+0x00007fd8650844b1:   c0 5d c3 66 90 66 2e 0f 1f 84 00 00 00 00 00 55
+0x00007fd8650844c1:   48 85 f6 48 89 e5 74 57 0f 1f 80 00 00 00 00 0f
+0x00007fd8650844d1:   b6 06 84 c0 74 49 0f b6 d0 83 e0 07 c1 fa 03 44
+0x00007fd8650844e1:   8d 50 01 0f b6 c0 41 89 d1 48 8d 56 01 4c 8d 44
+0x00007fd8650844f1:   06 02 31 c0 0f 1f 00 0f b6 0a 48 c1 e0 08 48 83 
+
+
+Stack slot to memory mapping:
+stack at sp + 0 slots: 0x0 is NULL
+stack at sp + 1 slots: 0x00007fd860021f90 points into unknown readable memory: 50 0f 00 ec d7 7f 00 00
+stack at sp + 2 slots: 0x0 is NULL
+stack at sp + 3 slots: 0x00007fd85fefc070 is pointing into the stack for thread: 0x00007fd7d800c800
+stack at sp + 4 slots: 0x00007fd85fefc050 is pointing into the stack for thread: 0x00007fd7d800c800
+stack at sp + 5 slots: 0x00007fd8650850ea: <offset 0x00000000000030ea> in /usr/lib/jvm/java-11-openjdk-amd64/lib/libjimage.so at 0x00007fd865082000
+stack at sp + 6 slots: 0x0 is NULL
+stack at sp + 7 slots: 0x0 is NULL
+
+
+---------------  P R O C E S S  ---------------
+
+Threads class SMR info:
+_java_thread_list=0x00007fd7d8001150, length=19, elements={
+0x00007fd860123000, 0x00007fd860125000, 0x00007fd86012a000, 0x00007fd86012c800,
+0x00007fd86012e800, 0x00007fd860130800, 0x00007fd860190000, 0x00007fd860195000,
+0x00007fd8602db000, 0x00007fd8602dd000, 0x00007fd8602f0800, 0x00007fd8602fa800,
+0x00007fd860015000, 0x00007fd7e42aa000, 0x00007fd818001000, 0x00007fd818002800,
+0x00007fd818004000, 0x00007fd7d800b000, 0x00007fd7d800c800

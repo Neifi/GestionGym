@@ -98,7 +98,7 @@ public class MainForm extends JFrame {
 
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(30, 144, 255));
-		panel.setBounds(0, 0, 714, 495);
+		panel.setBounds(0, 0, 718, 495);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
