@@ -13,6 +13,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import es.neifi.controller.AdminController;
+import es.neifi.controller.LoginController;
 import es.neifi.model.GestionGymDao;
 
 import javax.swing.JScrollBar;
@@ -133,6 +134,8 @@ public class CrudClientView extends JFrame {
 					jTextField.setEditable(false);
 					// table.setModel(AdminController.findAllClientes());
 				}
+				LoginController.entrar();
+				LoginController.salir();
 			}
 		});
 		btnGuardar_1.setFont(new Font("Segoe UI", Font.BOLD, 18));
@@ -160,11 +163,11 @@ public class CrudClientView extends JFrame {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 
-				dni.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
-				nombre.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-				apellidos.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-				fechaIns.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
-				fechaNa.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+//				dni.setText(table.getValueAt(table.getSelectedRow(), 0).toString());
+//				nombre.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+//				apellidos.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+//				fechaIns.setText(table.getValueAt(table.getSelectedRow(), 3).toString());
+//				fechaNa.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			}
 		});
 

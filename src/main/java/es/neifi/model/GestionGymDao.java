@@ -21,6 +21,32 @@ import javax.swing.table.DefaultTableModel;
 
 public class GestionGymDao {
 	
+	public static ResultSet readClientesLogin(String username, String password) {
+		String select = "SELECT * FROM clientes WHERE nombre = ? AND password = crypt(?,password)";
+
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(select, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+			stmt.setString(1, username);
+			stmt.setString(2, password);
+			rs = stmt.executeQuery();
+
+			return rs;
+		}
+
+		catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			PostgreSQLConnection.closeConnection(conn);
+		}
+		return rs;
+	}
+	
 	private static ResultSet selectRegistroByFecha(int[] day, int[] month ,int[] year, String dni) {
 		String select = "SELECT dia,mes,anio,horas from check_horas where day between ? AND ? AND month BETWEEN ? AND ?"
 				+ "AND anio BETWEEN ? AND ? AND dni_cliente = ?";
@@ -238,6 +264,29 @@ public class GestionGymDao {
 		return false;
 
 	}
+	
+	private static boolean setIsDentro(String dni, Boolean dentro) {
+		String update = "UPDATE clientes SET dentro= ? WHERE dni = ?";
+		Connection conn = null;
+		PreparedStatement stmt = null;
+		
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(update, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+
+			stmt.setString(1, dni);
+			stmt.setBoolean(2, dentro);
+			return stmt.executeUpdate() > 0 ? true : false;
+			
+		}
+
+		catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+		
+	}
 
 	protected static boolean createCliente(Cliente cliente) {
 		Connection conn = null;
@@ -269,7 +318,9 @@ public class GestionGymDao {
 		return false;
 	}
 
-	public static void registrarEntrada(Cliente cliente) {
+	public static void registrarEntrada(CheckHoras checkHoras) {
+		final Boolean DENTRO = true;
+		
 		Connection conn;
 		PreparedStatement stmt = null;
 		String insert = "INSERT INTO check_horas " + "(dni_cliente,id_gym,dia,mes,anio,tipo_registro)"
@@ -279,49 +330,52 @@ public class GestionGymDao {
 			conn = PostgreSQLConnection.getConnection();
 			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
 					ResultSet.TYPE_SCROLL_INSENSITIVE);
-
-			String fechaEntrada[] = cliente.getEntryDate();
-
-			// TODO mover al controller*******
-			cliente.startEntryTimer();
-			cliente.setTipoRegistro("E");
-			// *******************************
-
-			stmt.setString(1, cliente.getDni());
-			stmt.setInt(2, cliente.getIdGym());
-			stmt.setString(3, fechaEntrada[0]);
-			stmt.setString(4, fechaEntrada[1]);
-			stmt.setString(5, fechaEntrada[2]);
-			stmt.setString(6, cliente.getTipoRegistro());
+			stmt.setString(1, checkHoras.getDniCliente());
+			stmt.setInt(2, checkHoras.getIdGym());
+			stmt.setInt(3, checkHoras.getDia());
+			stmt.setInt(4, checkHoras.getMes());
+			stmt.setInt(5, checkHoras.getAnio());
+			stmt.setString(6, checkHoras.getTipo_registro());
+			stmt.execute();
+			setIsDentro(checkHoras.getDniCliente(),DENTRO);
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
-	public static void registrarSalida(Cliente cliente) {
-
+	public static void registrarSalida(CheckHoras checkHoras) {
+		
+		final Boolean FUERA = false;
 		Connection conn;
 		PreparedStatement stmt = null;
-		String insert = "INSERT INTO check_horas " + "(dni_cliente,id_gym,dia,mes,anio,tipo_registro)"
-				+ "VALUES (?,?,?,?,?,?)";
-
+		String insert = "INSERT INTO check_horas " + "(dni_cliente,id_gym,horas,dia,mes,anio,tipo_registro)"
+				+ "VALUES (?,?,?,?,?,?,?)";
+				
 		try {
 			conn = PostgreSQLConnection.getConnection();
 			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
 					ResultSet.TYPE_SCROLL_INSENSITIVE);
-
-			// TODO mover al controller
-			int hours = cliente.stopEntryTimer();
-			cliente.setTipoRegistro("S");
-			String fechaEntrada[] = cliente.getEntryDate();
-
-			stmt.setString(1, cliente.getDni());
-			stmt.setInt(2, cliente.getIdGym());
-			stmt.setString(3, fechaEntrada[0]);
-			stmt.setString(4, fechaEntrada[1]);
-			stmt.setString(5, fechaEntrada[2]);
-			stmt.setString(6, cliente.getTipoRegistro());
-
+			
+			stmt.setString(1, checkHoras.getDniCliente());
+			stmt.setInt(2, checkHoras.getIdGym());
+			stmt.setInt(3, checkHoras.getHoras());
+			stmt.setInt(4, checkHoras.getDia());
+			stmt.setInt(5, checkHoras.getMes());
+			stmt.setInt(6, checkHoras.getAnio());
+			stmt.setString(7, checkHoras.getTipo_registro());
+			stmt.execute();
+			
+			setIsDentro(checkHoras.getDniCliente(), FUERA);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		try {
+			conn = PostgreSQLConnection.getConnection();
+			stmt = conn.prepareStatement(insert, PreparedStatement.RETURN_GENERATED_KEYS,
+					ResultSet.TYPE_SCROLL_INSENSITIVE);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

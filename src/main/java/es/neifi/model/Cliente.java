@@ -20,26 +20,14 @@ public class Cliente {
 	private float elapsedTime;
 	private String tipoRegistro;
 	private String[] fechaEntrada;
-	public Cliente() {
 
-	}
-
-	public Cliente(int id) {
-		super();
-		this.id = id;
-	}
-
-	public Cliente(String dni) {
-		super();
-		this.dni = dni;
-	}
 
 	public Cliente(String dni, String password, String nombre, String apellidos) {
 		this.dni = dni;
 		this.password = password;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		;
+		
 	}
 
 	public Cliente(int id, String dni, String password, String nombre, String apellidos, String fechaNacimiento,
@@ -162,27 +150,7 @@ public class Cliente {
 	 * 
 	 * @return fecha en array
 	 */
-	public String[] getEntryDate() {
-		DateFormat dateformat = new SimpleDateFormat("dd/mm/yyyy");
-		Calendar cal = Calendar.getInstance();
-		String currentDate = dateformat.format(cal);
-		this.fechaEntrada = currentDate.split("/");
-		return fechaEntrada;
-
-	}
-
-	public void startEntryTimer() {
-		long start = System.currentTimeMillis();
-		long elapsedTimeMillis = System.currentTimeMillis() - start;
-		// minutos simulando horas
-		elapsedTime = elapsedTimeMillis / (60 * 1000F);
-	}
-
-	public int stopEntryTimer() {
-		int hours = (int) this.elapsedTime;
-		elapsedTime = 0;
-		return hours;
-	}
+	
 
 	@Override
 	public String toString() {
