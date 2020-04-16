@@ -18,7 +18,7 @@ import org.postgresql.shaded.com.ongres.scram.common.bouncycastle.pbkdf2.Runtime
 import es.neifi.Gestiongym.MainForm;
 import es.neifi.model.CheckHoras;
 import es.neifi.model.Cliente;
-import es.neifi.model.GestionGymDao;
+import es.neifi.model.PostgresLocalDao;
 import es.neifi.model.PostgreSQLConnection;
 import es.neifi.view.CheckListView;
 import es.neifi.view.CrudClientView;
@@ -66,7 +66,7 @@ public class LoginController {
 	 *         las credenciales.
 	 */
 	public User validateLogin(String username, String password) {
-		ResultSet rs = GestionGymDao.readClientesLogin(username, password);
+		ResultSet rs = PostgresLocalDao.readClientesLogin(username, password);
 
 		try {
 			if (rs.next()) {
@@ -97,7 +97,7 @@ public class LoginController {
 		mes = Integer.parseInt(fechaMes.format(date));
 		anio = Integer.parseInt(fechaAnio.format(date));
 		
-		GestionGymDao.registrarEntrada(new CheckHoras(logedClientDni,logedClientGymId,dia,mes,anio,ENTRADA));
+		PostgresLocalDao.registrarEntrada(new CheckHoras(logedClientDni,logedClientGymId,dia,mes,anio,ENTRADA));
 	}
 
 	public static void salir() {
@@ -108,7 +108,7 @@ public class LoginController {
 		anio = Integer.parseInt(fechaAnio.format(date));
 		horas = calcularHoras();
 		
-		GestionGymDao.registrarSalida(new CheckHoras(logedClientDni,logedClientGymId,horas,dia,mes,anio,SALIDA));
+		PostgresLocalDao.registrarSalida(new CheckHoras(logedClientDni,logedClientGymId,horas,dia,mes,anio,SALIDA));
 	}
 	
 	public static void selectAllRegistros() {

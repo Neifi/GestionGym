@@ -7,18 +7,18 @@ import java.util.Date;
 import javax.swing.table.DefaultTableModel;
 
 import es.neifi.model.Cliente;
-import es.neifi.model.GestionGymDao;
+import es.neifi.model.PostgresLocalDao;
 
-public class AdminController extends GestionGymDao {
+public class AdminController extends PostgresLocalDao {
 
 	public static DefaultTableModel findAllClientes() {
 
-		return GestionGymDao.findAllClientes();
+		return PostgresLocalDao.findAllClientes();
 
 	}
 
 	public static DefaultTableModel findClientesByCondition(String condition, String value) {
-		return GestionGymDao.findByCondition(condition, value);
+		return PostgresLocalDao.findByCondition(condition, value);
 
 	}
 
@@ -32,7 +32,7 @@ public class AdminController extends GestionGymDao {
 			fechaNa = fechaNacimiento;
 			cliente.setFechaNacimiento(fechaNa);
 			cliente.setEs_admin("f");
-			GestionGymDao.createCliente(cliente);
+			PostgresLocalDao.createCliente(cliente);
 			return true;
 		}else {
 			throw new RuntimeException("Formato de fecha incorrecta");
@@ -50,7 +50,7 @@ public class AdminController extends GestionGymDao {
 			fechaNa = fechaNacimiento;
 			cliente.setFechaNacimiento(fechaNa);
 			cliente.setEs_admin("t");
-			GestionGymDao.createCliente(cliente);
+			PostgresLocalDao.createCliente(cliente);
 			return true;
 		}else {
 			throw new RuntimeException("Formato de fecha incorrecta");

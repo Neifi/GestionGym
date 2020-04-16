@@ -14,7 +14,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import es.neifi.controller.AdminController;
 import es.neifi.controller.LoginController;
-import es.neifi.model.GestionGymDao;
+import es.neifi.model.PostgresLocalDao;
 
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
@@ -196,7 +196,7 @@ public class CrudClientView extends JFrame {
 		JButton btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!textField.getText().isBlank() || textField.getText().isEmpty()) {
+				if (!textField.getText().isEmpty() || textField.getText().isEmpty()) {
 					String options[] = new String[] { "dni", "nombre", "apellidos", "fecha_inscripcion",
 							"fecha_nacimiento", "dentro" };
 
@@ -364,7 +364,7 @@ public class CrudClientView extends JFrame {
 			texts.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (!texts.getText().isBlank()) {
+					if (!texts.getText().isEmpty()) {
 
 					}
 					texts.setEditable(true);

@@ -19,7 +19,7 @@ import java.util.Vector;
 
 import javax.swing.table.DefaultTableModel;
 
-public class GestionGymDao {
+public class PostgresLocalDao {
 	
 	public static ResultSet readClientesLogin(String username, String password) {
 		String select = "SELECT * FROM clientes WHERE nombre = ? AND password = crypt(?,password)";
